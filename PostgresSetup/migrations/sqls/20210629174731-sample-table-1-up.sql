@@ -1,0 +1,1 @@
+CREATE TABLE sample_table_1 (name VARCHAR(50), address VARCHAR(100), age integer, hobby VARCHAR(20));

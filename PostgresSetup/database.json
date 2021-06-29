@@ -1,0 +1,12 @@
+{
+    "dev": {
+        "driver": "pg",
+        "host": "0.0.0.0",
+        "database": "sample_db"
+    },
+    "test": {
+        "driver": "pg",
+        "host": "0.0.0.0",
+        "database": "sample_db_test"
+    }
+}
