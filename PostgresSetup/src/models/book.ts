@@ -22,7 +22,7 @@ export class BookStore {
         }
     }
 
-    async show(id: string): Promise<Book> {
+    async show(id: String): Promise<Book> {
         try {
             const conn = await db.connect();
             const sql = 'SELECT * FROM books WHERE id=($1)';
@@ -55,7 +55,7 @@ export class BookStore {
         }
     }
 
-    async delete(id: string): Promise<void> {
+    async delete(id: String): Promise<void> {
         try {
             const conn = await db.connect();
             const sql = 'DELETE FROM books WHERE id=($1)';

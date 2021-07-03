@@ -14,7 +14,7 @@ const {
 
 let db: Pool = new Pool();
 
-console.log(ENV);
+console.log('Environment : ', ENV);
 
 if (ENV === 'dev') {
     db = new Pool({
@@ -31,7 +31,7 @@ if (ENV === 'dev') {
         password: POSTGRES_PASSWORD,
     });
 } else {
-    console.log(`Unsupporeted Environment : ${ENV}`);
+    console.log('Unsupporeted Environment : ', ENV);
 }
 
 export default db;
