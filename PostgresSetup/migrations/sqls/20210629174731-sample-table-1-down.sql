@@ -1,1 +1,0 @@
-DROP TABLE sample_table_1;
