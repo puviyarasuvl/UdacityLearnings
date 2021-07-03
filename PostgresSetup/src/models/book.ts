@@ -1,7 +1,7 @@
 import db from '../database';
 
 export type Book = {
-    id: Number;
+    id?: Number;
     title: String;
     total_pages: Number;
     author: String;
@@ -38,7 +38,7 @@ export class BookStore {
         try {
             const conn = await db.connect();
             const sql =
-                'INSERT INTO books (title, total_pages, author, type, summary) VALUES ($1, $2, $3, $4, $5)';
+                'INSERT INTO books (title, total_pages, author, type, summary) VALUES ($1, $2, $3, $4, $5) RETURNING *';
             const result = await conn.query(sql, [
                 book.title,
                 book.total_pages,
@@ -46,20 +46,21 @@ export class BookStore {
                 book.type,
                 book.summary,
             ]);
+
             conn.release();
+
             return result.rows[0];
         } catch (err) {
             throw new Error(`Not able to connec to the DB. Error : ${err}`);
         }
     }
 
-    async delete(id: string): Promise<Book> {
+    async delete(id: string): Promise<void> {
         try {
             const conn = await db.connect();
             const sql = 'DELETE FROM books WHERE id=($1)';
             const result = await conn.query(sql, [id]);
             conn.release();
-            return result.rows[0];
         } catch (err) {
             throw new Error(`Not able to connec to the DB. Error : ${err}`);
         }

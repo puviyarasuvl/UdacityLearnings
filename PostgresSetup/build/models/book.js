@@ -102,7 +102,7 @@ var BookStore = /** @class */ (function () {
                         return [4 /*yield*/, database_1.default.connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'INSERT INTO books (title, total_pages, author, type, summary) VALUES ($1, $2, $3, $4, $5)';
+                        sql = 'INSERT INTO books (title, total_pages, author, type, summary) VALUES ($1, $2, $3, $4, $5) RETURNING *';
                         return [4 /*yield*/, conn.query(sql, [
                                 book.title,
                                 book.total_pages,
@@ -137,7 +137,7 @@ var BookStore = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         conn.release();
-                        return [2 /*return*/, result.rows[0]];
+                        return [3 /*break*/, 4];
                     case 3:
                         err_4 = _a.sent();
                         throw new Error("Not able to connec to the DB. Error : " + err_4);
