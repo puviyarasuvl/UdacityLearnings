@@ -1,5 +1,6 @@
 import express from 'express';
 import booksRouter from './api/books';
+import userRouter from './api/users';
 
 const routes = express.Router();
 
@@ -10,5 +11,7 @@ routes.get('/', (req, res) => {
 });
 
 routes.use('/books', booksRouter);
+
+routes.use('/users', userRouter);
 
 export default routes;

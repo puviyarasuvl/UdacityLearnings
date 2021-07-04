@@ -40,111 +40,77 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var book_1 = require("../../models/book");
-var booksRouter = express_1.default.Router();
-var store = new book_1.BookStore();
-var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.index()];
-            case 1:
-                result = _a.sent();
-                res.json(result);
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                res.status(400);
-                res.json(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var bookId, result, err_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                bookId = req.params.bookId;
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.show(bookId)];
-            case 2:
-                result = _a.sent();
-                res.json(result);
-                return [3 /*break*/, 4];
-            case 3:
-                err_2 = _a.sent();
-                res.status(400);
-                res.json(err_2);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); };
+var user_1 = require("../../models/user");
+var userRouter = express_1.default.Router();
+var userHandle = new user_1.UserHandle();
 var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var newBook, result, err_3;
+    var newUser, result, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                newBook = {
-                    title: req.body.title,
-                    total_pages: parseInt(req.body.total_pages),
-                    author: req.body.author,
-                    type: req.body.type,
-                    summary: req.body.summary,
+                newUser = {
+                    user_id: req.body.user_id,
+                    password: req.body.password,
                 };
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, store.create(newBook)];
+                return [4 /*yield*/, userHandle.create(newUser)];
             case 2:
                 result = _a.sent();
-                res.json(result);
+                if (result) {
+                    res.send(result);
+                }
+                else {
+                    res.status(400);
+                    res.send('Failed to create user');
+                }
                 return [3 /*break*/, 4];
             case 3:
-                err_3 = _a.sent();
+                err_1 = _a.sent();
                 res.status(400);
-                res.json(err_3);
+                res.send(err_1);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
-var deleteOne = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var err_4;
+var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var reqUser, result, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, store.delete(req.body.bookId)];
+                reqUser = {
+                    user_id: req.body.user_id,
+                    password: req.body.password,
+                };
+                _a.label = 1;
             case 1:
-                _a.sent();
-                res.send('Deleted Successfully');
-                return [3 /*break*/, 3];
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, userHandle.authenticate(reqUser)];
             case 2:
-                err_4 = _a.sent();
+                result = _a.sent();
+                if (result) {
+                    res.send(result);
+                }
+                else {
+                    res.status(400);
+                    res.send('Failed to validate user');
+                }
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _a.sent();
                 res.status(400);
-                res.json(err_4);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                res.send(err_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
-booksRouter.get('/', function (req, res) {
-    index(req, res);
-});
-booksRouter.get('/:bookId', function (req, res) {
-    show(req, res);
-});
-booksRouter.post('/', function (req, res) {
+userRouter.post('/', function (req, res) {
     create(req, res);
 });
-booksRouter.delete('/', function (req, res) {
-    deleteOne(req, res);
+userRouter.get('/', function (req, res) {
+    authenticate(req, res);
 });
-exports.default = booksRouter;
+exports.default = userRouter;
