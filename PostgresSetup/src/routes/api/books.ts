@@ -1,5 +1,6 @@
 import express from 'express';
 import { Book, BookStore } from '../../models/book';
+import authenticator from '../../utilities/authenticator';
 
 const booksRouter = express.Router();
 
@@ -50,7 +51,7 @@ const deleteOne = async (req: express.Request, res: express.Response) => {
         res.send('Deleted Successfully');
     } catch (err) {
         res.status(400);
-        res.json(err);
+        res.send(err);
     }
 };
 
@@ -62,11 +63,11 @@ booksRouter.get('/:bookId', (req, res) => {
     show(req, res);
 });
 
-booksRouter.post('/', (req, res) => {
+booksRouter.post('/', authenticator, (req, res) => {
     create(req, res);
 });
 
-booksRouter.delete('/', (req, res) => {
+booksRouter.delete('/', authenticator, (req, res) => {
     deleteOne(req, res);
 });
 

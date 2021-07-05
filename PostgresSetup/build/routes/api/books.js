@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var book_1 = require("../../models/book");
+var authenticator_1 = __importDefault(require("../../utilities/authenticator"));
 var booksRouter = express_1.default.Router();
 var store = new book_1.BookStore();
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -129,7 +130,7 @@ var deleteOne = function (req, res) { return __awaiter(void 0, void 0, void 0, f
             case 2:
                 err_4 = _a.sent();
                 res.status(400);
-                res.json(err_4);
+                res.send(err_4);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -141,10 +142,10 @@ booksRouter.get('/', function (req, res) {
 booksRouter.get('/:bookId', function (req, res) {
     show(req, res);
 });
-booksRouter.post('/', function (req, res) {
+booksRouter.post('/', authenticator_1.default, function (req, res) {
     create(req, res);
 });
-booksRouter.delete('/', function (req, res) {
+booksRouter.delete('/', authenticator_1.default, function (req, res) {
     deleteOne(req, res);
 });
 exports.default = booksRouter;

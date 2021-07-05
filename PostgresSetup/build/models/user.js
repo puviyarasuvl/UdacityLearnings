@@ -43,15 +43,17 @@ exports.UserHandle = void 0;
 var database_1 = __importDefault(require("../database"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var dotenv_1 = __importDefault(require("dotenv"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 dotenv_1.default.config();
 var pepper = process.env.BCRYPT_PASSWORD;
 var saltRounds = process.env.SALT_ROUNDS;
+var secret = process.env.JWT_SECRET;
 var UserHandle = /** @class */ (function () {
     function UserHandle() {
     }
     UserHandle.prototype.create = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var hash, conn, sql, result, err_1;
+            var hash, conn, sql, result, newUser, token, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -66,8 +68,10 @@ var UserHandle = /** @class */ (function () {
                         return [4 /*yield*/, conn.query(sql, [user.user_id, hash])];
                     case 3:
                         result = _a.sent();
+                        newUser = result.rows[0];
+                        token = jsonwebtoken_1.default.sign({ user: newUser }, secret);
                         conn.release();
-                        return [2 /*return*/, result.rows[0]];
+                        return [2 /*return*/, token];
                     case 4:
                         err_1 = _a.sent();
                         console.log(err_1);
@@ -79,7 +83,7 @@ var UserHandle = /** @class */ (function () {
     };
     UserHandle.prototype.authenticate = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, selectedUser, err_2;
+            var conn, sql, result, selectedUser, token, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -91,10 +95,12 @@ var UserHandle = /** @class */ (function () {
                         return [4 /*yield*/, conn.query(sql, [user.user_id])];
                     case 2:
                         result = _a.sent();
+                        conn.release();
                         if (result.rows.length) {
                             selectedUser = result.rows[0];
                             if (bcrypt_1.default.compareSync(user.password + pepper, selectedUser.password)) {
-                                return [2 /*return*/, selectedUser];
+                                token = jsonwebtoken_1.default.sign(selectedUser.user_id, secret);
+                                return [2 /*return*/, token];
                             }
                         }
                         return [2 /*return*/, null];
