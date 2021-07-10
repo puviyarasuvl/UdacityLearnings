@@ -1,6 +1,6 @@
 import express from 'express';
 import { Book, BookStore } from '../../models/book';
-import authenticator from '../../utilities/authenticator';
+import authenticator from '../../services/authenticator';
 
 const booksRouter = express.Router();
 

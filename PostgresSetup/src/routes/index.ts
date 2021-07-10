@@ -1,5 +1,7 @@
 import express from 'express';
 import booksRouter from './api/books';
+import dashboardRouter from './api/dashboard';
+import ordersRouter from './api/orders';
 import userRouter from './api/users';
 
 const routes = express.Router();
@@ -13,5 +15,9 @@ routes.get('/', (req, res) => {
 routes.use('/books', booksRouter);
 
 routes.use('/users', userRouter);
+
+routes.use('/orders', ordersRouter);
+
+routes.use('/dashboard', dashboardRouter);
 
 export default routes;
