@@ -1,1 +1,1 @@
-DROP TABLE order-books;
+DROP TABLE order_books;
