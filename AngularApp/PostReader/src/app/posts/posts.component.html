@@ -1,0 +1,7 @@
+<h1>{{ title }}</h1>
+
+<app-post-item
+    *ngFor="let post of posts"
+    [post]="post"
+    (hideEvent)="hideEvent($event)"
+></app-post-item>
