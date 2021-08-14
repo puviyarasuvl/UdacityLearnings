@@ -1,0 +1,37 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+    <h1>Create a new post</h1>
+    <input
+        type="text"
+        name="title"
+        [(ngModel)]="title"
+        required
+        minlength="6"
+        placeholder="Enter post title"
+        #postTitle="ngModel"
+    />
+    <br />
+    <textarea
+        type="text"
+        name="body"
+        [(ngModel)]="body"
+        required
+        minlength="10"
+        placeholder="Enter post body"
+    ></textarea>
+    <br />
+    <input
+        type="submit"
+        value="Submit"
+        class="btn btn-primary"
+        [disabled]="form.invalid"
+    />
+</form>
+
+<div *ngIf="postTitle.invalid && postTitle.dirty">
+    <div *ngIf="postTitle.errors?.required">
+        Please provide a title for the post
+    </div>
+    <div *ngIf="postTitle.errors?.minlength">
+        Minimum lenght of the title must be 6
+    </div>
+</div>
