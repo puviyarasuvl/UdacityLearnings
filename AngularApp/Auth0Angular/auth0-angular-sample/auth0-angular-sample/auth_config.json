@@ -1,0 +1,6 @@
+{
+    "domain": "dev-nmnw9s-h.us.auth0.com",
+    "clientId": "QC5V7WOv9SWWvtE8Y2oV9UeW5tnRznTg",
+    "audience": "https://express.sample",
+    "serverUrl": "http://localhost:6060"
+}
